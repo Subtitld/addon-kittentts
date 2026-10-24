@@ -1,0 +1,13 @@
+Intel OpenMP runtime (libiomp5md.dll) — Windows builds only
+
+libiomp5md.dll is Intel Corporation's OpenMP runtime, which LibTorch loads on
+Windows for its CPU thread pool. It is the copy the PyTorch 2.14.1 CPU wheel
+carries, redistributed unmodified, in executable form only, as part of this
+add-on, under section 2.1.D of the Intel End User License Agreement for
+Developer Tools (LICENSE.txt; Intel's notices for software it includes are in
+third-party-programs.txt).
+
+As that agreement requires, by using this add-on you agree not to reverse
+engineer, decompile or disassemble libiomp5md.dll, and the limitations of
+liability in section 7 of LICENSE.txt apply to Intel with respect to it.
+Neither Intel nor its suppliers certify or guarantee this add-on.

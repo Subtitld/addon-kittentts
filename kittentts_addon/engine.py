@@ -205,8 +205,13 @@ def performance_cores() -> int:
 
 
 def default_threads() -> int:
-    """Performance cores, else one per core (half the logical CPUs), at most 8."""
-    cores = performance_cores() or max(1, (os.cpu_count() or 2) // 2)
+    """Performance cores, else one per core, at most 8.
+
+    One per core is half the logical CPUs, except on a Mac: Apple Silicon has
+    no hyper-threading.
+    """
+    logical = os.cpu_count() or 2
+    cores = performance_cores() or (logical if sys.platform == 'darwin' else max(1, logical // 2))
     return max(1, min(8, cores))
 
 

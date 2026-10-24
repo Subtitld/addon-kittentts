@@ -51,6 +51,7 @@ RULES = [
      'pytorch/LICENSE', 'LibTorch (PyTorch)'),
     (r'^(libgomp|libgcc_s|libstdc\+\+)[-.]', 'gcc-runtime/COPYING.RUNTIME', 'GCC runtime'),
     (r'^(libc\+\+|libc\+\+abi|libunwind|libomp)[-.]', 'llvm-runtime/LICENSE.TXT', 'LLVM runtime'),
+    (r'^libiomp5md\.dll$', 'intel-openmp/NOTICE.txt', 'Intel OpenMP runtime'),
     (r'^(libpython3[\d.]*\.(so|dylib)[\d.]*|python3\d*\.dll|python)$', 'python/LICENSE.txt', 'CPython'),
     (r'(\.cpython-[^/]+\.(so|dylib)|\.pyd)$', 'python/LICENSE.txt', 'CPython extension module'),
     (r'^libffi[-.\d]*\.(so|dylib|dll)', 'python-runtime-libs/libffi-LICENSE', 'libffi'),
