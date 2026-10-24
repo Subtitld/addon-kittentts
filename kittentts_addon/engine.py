@@ -215,8 +215,12 @@ def _illegal_instruction(returncode: int) -> bool:
                                      and returncode & 0xFFFFFFFF == _STATUS_ILLEGAL_INSTRUCTION)
 
 
-def _run(cmd: list[str], cancel: threading.Event, what: str) -> None:
-    """Run a program to the end, or kill it on cancel; raise EngineError on failure."""
+def _run(cmd: list[str], cancel: threading.Event, what: str) -> list[str]:
+    """Run a program to the end, or kill it on cancel; raise EngineError on failure.
+
+    Returns the program's own messages (its last lines, without llama.cpp's
+    loading chatter), for the log.
+    """
     binary = Path(cmd[0])
     if not binary.is_file():
         raise EngineError(f'{binary.name} is missing from the add-on ({binary}). Reinstall the add-on.')
@@ -233,17 +237,18 @@ def _run(cmd: list[str], cancel: threading.Event, what: str) -> None:
                     proc.kill()
                     proc.wait()
                     raise download.Cancelled()
+        errors.seek(0)
+        lines = [line for line in errors.read().decode('utf-8', 'replace').splitlines()
+                 if line.strip() and not line.startswith(('llama_', 'load', 'print_info'))]
         if returncode != 0:
             if _illegal_instruction(returncode):
                 raise UnsupportedCPU(
                     'This processor lacks the AVX2, FMA and F16C instructions KittenTTS needs '
                     '(Intel processors since 2013, AMD since 2015, but not every Celeron, '
                     'Pentium or Atom). Pick another voice engine.')
-            errors.seek(0)
-            lines = [line for line in errors.read().decode('utf-8', 'replace').splitlines()
-                     if line.strip() and not line.startswith(('llama_', 'load', 'print_info'))]
             tail = ' / '.join(lines[-4:])
             raise EngineError(f'{what} failed (exit {returncode}): {tail or "no output"}')
+    return lines[-8:]
 
 
 # ---------------------------------------------------------------------------
@@ -481,11 +486,11 @@ def synthesize(text: str, voice_file: Path, output: Path, *, transcript: str | N
     try:
         for attempt in range(ATTEMPTS):
             attempt_seed = (seed + 7919 * attempt) & 0x7FFFFFFF
-            _run(cmd + ['--seed', str(attempt_seed)], cancel, 'kitten-tts')
+            messages = _run(cmd + ['--seed', str(attempt_seed)], cancel, 'kitten-tts')
             if finished(report):
                 break
-            log.warning('kitten-tts did not finish the line with seed %d (attempt %d of %d)',
-                        attempt_seed, attempt + 1, ATTEMPTS)
+            log.warning('kitten-tts did not finish the line with seed %d (attempt %d of %d): %s',
+                        attempt_seed, attempt + 1, ATTEMPTS, summary(report) or ' / '.join(messages[-3:]))
         else:
             raise EngineError('KittenTTS could not finish this line: it kept producing silence. '
                               'Try another seed or another voice, or reword the line.')
@@ -517,6 +522,16 @@ def max_tokens(text: str) -> int:
     runaway line from costing a minute before it is retried.
     """
     return max(250, min(1000, 6 * len(text)))
+
+
+def summary(report: Path) -> str:
+    """Per chunk: tokens generated, of which speech, and whether it ended."""
+    try:
+        chunks = json.loads(report.read_text(encoding='utf-8'))['chunks']
+    except (OSError, ValueError, KeyError, TypeError):
+        return ''
+    return '; '.join(f'{len(c.get("generated", []))} tokens, {len(c.get("audio_tokens", []))} audio, '
+                     f'{"ended" if c.get("terminated") else "unfinished"}' for c in chunks)
 
 
 def finished(report: Path) -> bool:

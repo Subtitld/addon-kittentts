@@ -150,4 +150,6 @@ def test_speaks_built_in_voices_and_clones_across_languages(tmp_path):
         proc.stdin.close()
         proc.wait(timeout=30)
         proc.stdout.close()
+        # The add-on's log, so a failure in CI says what kitten-tts did.
+        sys.stderr.write(proc.stderr.read().decode('utf-8', 'replace')[-20000:])
         proc.stderr.close()
