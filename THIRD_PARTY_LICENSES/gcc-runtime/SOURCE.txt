@@ -1,0 +1,12 @@
+GCC runtime libraries — GPL-3.0-or-later WITH GCC-exception-3.1
+
+Texts: COPYING3 and COPYING.RUNTIME, from the GCC source tree.
+Upstream: https://gcc.gnu.org/
+
+Bundled library:
+  * libgomp (GNU OpenMP), on Linux: LibTorch's CPU thread pool, the copy the
+    PyTorch wheel carries.
+
+The GCC Runtime Library Exception lets these libraries travel with a program
+under another licence without the program becoming GPL. No source offer is
+needed for the runtime libraries themselves.

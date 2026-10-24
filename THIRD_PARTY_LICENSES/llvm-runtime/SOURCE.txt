@@ -1,0 +1,8 @@
+LLVM runtime libraries — Apache-2.0 WITH LLVM-exception
+
+LICENSE.TXT is the LLVM project's licence (llvm-project, llvmorg-19.1.0).
+Upstream: https://llvm.org/
+
+On macOS the archive carries libomp (LLVM's OpenMP runtime), the copy the
+PyTorch wheel carries for LibTorch. It is redistributed unmodified. The LLVM
+exception lets it travel with a program under another licence.

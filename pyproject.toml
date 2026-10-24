@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "subtitld-addon-kittentts"
+version = "26.10.1"
+description = "Subtitld add-on: offline text-to-speech and voice cloning with KittenML's KittenTTS 2"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Subtitld", email = "jbopen@gmail.com" }]
+requires-python = ">=3.10"
+
+# No runtime dependencies. Synthesis is KittenML's kitten-tts runtime and this
+# add-on's kitten-ref, built by tools/build_native.py; the downloads use the
+# standard library.
+dependencies = []
+
+[project.optional-dependencies]
+# torch only to build the native programs against its LibTorch
+# (tools/build_native.py pins the version; install it from the CPU index).
+build = ["pyinstaller>=6.10"]
+dev = ["pytest>=7.4"]
+
+[project.scripts]
+kittentts-addon = "kittentts_addon.__main__:main"
+
+[tool.setuptools]
+packages = ["kittentts_addon"]
+
+[tool.setuptools.package-data]
+kittentts_addon = ["pins.json", "voice_list.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

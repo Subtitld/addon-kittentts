@@ -1,0 +1,45 @@
+{
+  "repo": "KittenML/kitten-tts-2",
+  "revision": "c93cb7c271baa51d9ae8204d5277988906f235a2",
+  "files": {
+    "config": {
+      "path": "config.json",
+      "size": 2435,
+      "sha256": "1b9ec1e0fe936b6233c0f25a984af52b1860f1704a7ad725f1d6aaa114a52599",
+      "save_as": "upstream-config.json"
+    },
+    "model": {
+      "path": "cpp/model-tq2_1.gguf",
+      "size": 1029076832,
+      "sha256": "c6ad7ee1dbda3fd7a2b3dc3b8b1689f4687f761b7bd6509569b5592f543548f7"
+    },
+    "decoder": {
+      "path": "cpp/default/decoder.pt",
+      "size": 534310697,
+      "sha256": "c67c1a700358695c780c64417328b74f4d6a71f7363df7cdbbcda6133d6096ae"
+    },
+    "voices": {
+      "path": "cpp/default/voices.json",
+      "size": 96939292,
+      "sha256": "216b2432eed1d46169bcfd19ab8f15cc1695b3120825c6dbbd9b66e128754ee8"
+    },
+    "licence": {
+      "path": "LICENSE.md",
+      "size": 12462,
+      "sha256": "3be75a42ccf71515b18094f116a2f271ac599334fed980ede7021b4636d01212"
+    },
+    "spk_proj": {
+      "path": "lm/model-ternary.safetensors",
+      "offset": 670501016,
+      "size": 2109440,
+      "sha256": "b1d226ff7b74c98de7264f55340c5e22862352b9b44e86cc9d4f770824bf82ab",
+      "save_as": "spk_proj.bin"
+    }
+  },
+  "ref_encoder": {
+    "url": "https://github.com/Subtitld/addon-kittentts/releases/download/ref-encoder-1/ref_encoder-1.pt",
+    "path": "ref_encoder-1.pt",
+    "size": 541835463,
+    "sha256": "170b11e0b21857ad3b1ab56169c0bcfd801cadad26c67dbfa5f082f8c203dca9"
+  }
+}

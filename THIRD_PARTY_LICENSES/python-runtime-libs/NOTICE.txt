@@ -1,0 +1,21 @@
+Native libraries of the Python runtime
+
+PyInstaller freezes CPython together with the shared libraries its standard
+modules link against. Which of them are separate files depends on the
+platform and on how the build machine's Python was built; this directory
+carries the licence of each one that may be present.
+
+  Library    Used by          Licence      File here
+  OpenSSL 3  ssl, hashlib     Apache-2.0   openssl-LICENSE.txt (OpenSSL 3.0)
+  Expat      pyexpat          MIT          expat-COPYING (2.6.1)
+  libffi     ctypes           MIT          libffi-LICENSE (3.4.6)
+  zlib       zlib             Zlib         zlib-LICENSE (1.3.1)
+
+Upstreams: https://www.openssl.org/, https://libexpat.github.io/,
+https://github.com/libffi/libffi, https://zlib.net/
+
+The add-on downloads its models over HTTPS and checks them by sha256, so ssl
+and hashlib, and with them OpenSSL, are in the bundle. The texts were fetched
+from the upstream tags named above. The copies in a given build come from its
+build machine and may be a different release of the same library under the
+same licence. All are redistributed unmodified.

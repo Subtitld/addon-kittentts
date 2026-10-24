@@ -1,0 +1,37 @@
+diff --git a/tools/kitten-tts/main.cpp b/tools/kitten-tts/main.cpp
+index 39db846..c5a604a 100644
+--- a/tools/kitten-tts/main.cpp
++++ b/tools/kitten-tts/main.cpp
+@@ -1,3 +1,5 @@
++#include <algorithm>
++#include <cmath>
+ #include "llama.h"
+ #include "text.h"
+ #include "sampling.h"
+@@ -189,6 +191,14 @@ int main(int argc,char ** argv) try {
+         auto history=ids;std::vector<int> audio_ids,generated;bool ended=false;
+         for(int step=0;step<budget;++step) {
+             const float * raw=llama_get_logits_ith(ctx.get(),-1);
++            // Subtitld: a degenerate generation (a long run of silence tokens)
++            // can leave the model with no finite logit; sampling from that reads
++            // past an empty list. End the chunk unterminated instead, so the
++            // report says so and the caller can try another seed.
++            if(std::none_of(raw,raw+n_vocab,[](float x){return std::isfinite(x);})) {
++                std::cerr<<"kitten-tts: the language model returned no usable scores at step "<<step<<"; ending the chunk\n";
++                break;
++            }
+             if(logits_file.is_open()) logits_file.write(reinterpret_cast<const char *>(raw),n_vocab*sizeof(float));
+             if(args.count("--force-tokens") && step==int(forced.size())) break;
+             std::vector<float> scores(raw,raw+n_vocab);kitten::process(scores,history,ids.size(),tm,settings);
+diff --git a/tools/kitten-tts/sampling.h b/tools/kitten-tts/sampling.h
+index 8d20db0..2b1537d 100644
+--- a/tools/kitten-tts/sampling.h
++++ b/tools/kitten-tts/sampling.h
+@@ -64,6 +64,7 @@ inline void process(std::vector<float> & scores, const std::vector<int> & histor
+         std::vector<size_t> order;
+         for(size_t i=0;i<scores.size();++i) if(std::isfinite(scores[i])) order.push_back(i);
+         std::sort(order.begin(),order.end(),[&](size_t a,size_t b){return scores[a]<scores[b];});
++        if(order.empty()) return;  // Subtitld: nothing finite to keep (see main.cpp)
+         float peak=scores[order.back()]; double sum=0; for(float x:scores) sum+=std::exp(double(x-peak));
+         double acc=0;
+         for(size_t i=0;i+1<order.size();++i) {

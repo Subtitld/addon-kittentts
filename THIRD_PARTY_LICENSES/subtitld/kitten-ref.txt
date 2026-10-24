@@ -1,0 +1,6 @@
+kitten-ref — the clone-reference prep tool of this add-on
+
+Its source is native/kitten_ref.cpp in https://github.com/Subtitld/addon-kittentts,
+Copyright 2026 Subtitld contributors, under the Apache License 2.0 (LICENSE at
+the root of this archive). It links LibTorch (pytorch/LICENSE) and includes
+nlohmann/json (nlohmann-json/LICENSE).

@@ -1,0 +1,713 @@
+{
+ "revision": "c93cb7c271baa51d9ae8204d5277988906f235a2",
+ "defaults": {
+  "en": "Bruno",
+  "es": "Spanish",
+  "fr": "French",
+  "de": "German",
+  "it": "Italian",
+  "pt": "Portuguese",
+  "ru": "Russian",
+  "zh": "ChineseNewsCctv",
+  "ja": "JapaneseTrainConductor",
+  "ko": "KoreanNewsAnchor",
+  "ar": "Arabic",
+  "hi": "Hindi",
+  "tr": "TurkishNewsAnchor",
+  "nl": "DutchWeatherPresenter",
+  "pl": "PolishNewsAnchor",
+  "id": "IndonesianNewsAnchor"
+ },
+ "voices": [
+  {
+   "id": "AirportAnnouncer",
+   "language": "en",
+   "display_name": "Airport announcer",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "Alfred",
+   "language": "en",
+   "display_name": "Alfred (tender, older, man)",
+   "reference_seconds": 15.8
+  },
+  {
+   "id": "AudiobookNarratorFemale",
+   "language": "en",
+   "display_name": "Audiobook narrator, woman",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "Bella",
+   "language": "en",
+   "display_name": "Bella (KittenTTS 0.8 voice, woman)",
+   "reference_seconds": 12.2
+  },
+  {
+   "id": "BoredTeenager",
+   "language": "en",
+   "display_name": "Bored teenager",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "Bruno",
+   "language": "en",
+   "display_name": "Bruno (KittenTTS 0.8 voice, man)",
+   "reference_seconds": 9.9
+  },
+  {
+   "id": "CalmHostageNegotiator",
+   "language": "en",
+   "display_name": "Calm hostage negotiator",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "Claire",
+   "language": "en",
+   "display_name": "Claire (playful professional, woman)",
+   "reference_seconds": 10.9
+  },
+  {
+   "id": "Dante",
+   "language": "en",
+   "display_name": "Dante (playful, smooth, young, man)",
+   "reference_seconds": 10.2
+  },
+  {
+   "id": "Diana",
+   "language": "en",
+   "display_name": "Diana (stern military officer, woman)",
+   "reference_seconds": 11.1
+  },
+  {
+   "id": "Dolores",
+   "language": "en",
+   "display_name": "Dolores (southern, elderly, woman)",
+   "reference_seconds": 16.6
+  },
+  {
+   "id": "Edith",
+   "language": "en",
+   "display_name": "Edith (soft elderly grandmother, woman)",
+   "reference_seconds": 11.1
+  },
+  {
+   "id": "Eleanor",
+   "language": "en",
+   "display_name": "Eleanor (somber historian, woman)",
+   "reference_seconds": 11.1
+  },
+  {
+   "id": "Elliot",
+   "language": "en",
+   "display_name": "Elliot (grieving, young, man)",
+   "reference_seconds": 13.0
+  },
+  {
+   "id": "FairytaleNarratorWhimsical",
+   "language": "en",
+   "display_name": "Fairytale narrator whimsical",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "Frank",
+   "language": "en",
+   "display_name": "Frank (gravelly, grizzled war veteran, man)",
+   "reference_seconds": 11.0
+  },
+  {
+   "id": "Grace",
+   "language": "en",
+   "display_name": "Grace (soothing nurse, woman)",
+   "reference_seconds": 11.0
+  },
+  {
+   "id": "GrandmaBedtimeStory",
+   "language": "en",
+   "display_name": "Grandma bedtime story",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "GriefEulogy",
+   "language": "en",
+   "display_name": "Grief eulogy",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "Herbert",
+   "language": "en",
+   "display_name": "Herbert (wise elderly professor, man)",
+   "reference_seconds": 11.0
+  },
+  {
+   "id": "Hugo",
+   "language": "en",
+   "display_name": "Hugo (KittenTTS 0.8 voice, man)",
+   "reference_seconds": 11.8
+  },
+  {
+   "id": "Iris",
+   "language": "en",
+   "display_name": "Iris (hushed museum guide, woman)",
+   "reference_seconds": 11.1
+  },
+  {
+   "id": "Jasper",
+   "language": "en",
+   "display_name": "Jasper (KittenTTS 0.8 voice, man)",
+   "reference_seconds": 11.1
+  },
+  {
+   "id": "Julian",
+   "language": "en",
+   "display_name": "Julian (soft, dreamy poet, man)",
+   "reference_seconds": 11.1
+  },
+  {
+   "id": "Kiki",
+   "language": "en",
+   "display_name": "Kiki (KittenTTS 0.8 voice, woman)",
+   "reference_seconds": 11.1
+  },
+  {
+   "id": "Laurence",
+   "language": "en",
+   "display_name": "Laurence (dramatic stage actor, man)",
+   "reference_seconds": 11.1
+  },
+  {
+   "id": "Leo",
+   "language": "en",
+   "display_name": "Leo (KittenTTS 0.8 voice, man)",
+   "reference_seconds": 11.5
+  },
+  {
+   "id": "Luna",
+   "language": "en",
+   "display_name": "Luna (KittenTTS 0.8 voice, woman)",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "Maeve",
+   "language": "en",
+   "display_name": "Maeve (cozy, warm storyteller, woman)",
+   "reference_seconds": 11.1
+  },
+  {
+   "id": "Marcus",
+   "language": "en",
+   "display_name": "Marcus (smooth radio DJ, man)",
+   "reference_seconds": 11.1
+  },
+  {
+   "id": "Martha",
+   "language": "en",
+   "display_name": "Martha (weathered radio journalist, woman)",
+   "reference_seconds": 11.1
+  },
+  {
+   "id": "Matthew",
+   "language": "en",
+   "display_name": "Matthew (exhausted mechanic, man)",
+   "reference_seconds": 13.7
+  },
+  {
+   "id": "Miles",
+   "language": "en",
+   "display_name": "Miles (gentle librarian, man)",
+   "reference_seconds": 11.1
+  },
+  {
+   "id": "NervousFirstDate",
+   "language": "en",
+   "display_name": "Nervous first date",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "NewsAnchorFemale",
+   "language": "en",
+   "display_name": "News anchor, woman",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "Otis",
+   "language": "en",
+   "display_name": "Otis (rumbling blues musician, man)",
+   "reference_seconds": 11.1
+  },
+  {
+   "id": "PilotCabinAnnouncement",
+   "language": "en",
+   "display_name": "Pilot cabin announcement",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "Raven",
+   "language": "en",
+   "display_name": "Raven (controlled fury, young, woman)",
+   "reference_seconds": 9.5
+  },
+  {
+   "id": "Reginald",
+   "language": "en",
+   "display_name": "Reginald (distinguished elderly diplomat, man)",
+   "reference_seconds": 11.0
+  },
+  {
+   "id": "Rosie",
+   "language": "en",
+   "display_name": "Rosie (KittenTTS 0.8 voice, woman)",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "Sable",
+   "language": "en",
+   "display_name": "Sable (hushed conspirator, woman)",
+   "reference_seconds": 11.1
+  },
+  {
+   "id": "Saoirse",
+   "language": "en",
+   "display_name": "Saoirse (joyful, Irish, woman)",
+   "reference_seconds": 8.1
+  },
+  {
+   "id": "SarcasticCoworker",
+   "language": "en",
+   "display_name": "Sarcastic coworker",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "Serena",
+   "language": "en",
+   "display_name": "Serena (gentle yoga instructor, woman)",
+   "reference_seconds": 11.1
+  },
+  {
+   "id": "Victor",
+   "language": "en",
+   "display_name": "Victor (controlled fury, older, man)",
+   "reference_seconds": 12.3
+  },
+  {
+   "id": "Victoria",
+   "language": "en",
+   "display_name": "Victoria (regal narrator, woman)",
+   "reference_seconds": 11.1
+  },
+  {
+   "id": "Vincent",
+   "language": "en",
+   "display_name": "Vincent (hushed museum guide, man)",
+   "reference_seconds": 11.1
+  },
+  {
+   "id": "Walter",
+   "language": "en",
+   "display_name": "Walter (warm grandfather, man)",
+   "reference_seconds": 11.0
+  },
+  {
+   "id": "WeatherPresenterCheerful",
+   "language": "en",
+   "display_name": "Weather presenter cheerful",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "Willow",
+   "language": "en",
+   "display_name": "Willow (hushed, young, woman)",
+   "reference_seconds": 18.0
+  },
+  {
+   "id": "SpanishAbuela",
+   "language": "es",
+   "display_name": "Abuela",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "SpanishBreakupSad",
+   "language": "es",
+   "display_name": "Breakup sad",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "SpanishNews",
+   "language": "es",
+   "display_name": "News",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "Spanish",
+   "language": "es",
+   "display_name": "Spanish (main voice)",
+   "reference_seconds": 9.6
+  },
+  {
+   "id": "SpanishTango",
+   "language": "es",
+   "display_name": "Tango",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "FrenchDocumentary",
+   "language": "fr",
+   "display_name": "Documentary",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "French",
+   "language": "fr",
+   "display_name": "French (main voice)",
+   "reference_seconds": 9.6
+  },
+  {
+   "id": "FrenchGrandmereRecette",
+   "language": "fr",
+   "display_name": "Grandmere recette",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "FrenchTeacher",
+   "language": "fr",
+   "display_name": "Teacher",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "FrenchWaiter",
+   "language": "fr",
+   "display_name": "Waiter",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "German",
+   "language": "de",
+   "display_name": "German (main voice)",
+   "reference_seconds": 9.5
+  },
+  {
+   "id": "GermanKneipe",
+   "language": "de",
+   "display_name": "Kneipe",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "GermanProfessor",
+   "language": "de",
+   "display_name": "Professor",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "GermanTrainAnnouncement",
+   "language": "de",
+   "display_name": "Train announcement",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "ItalianFashionDesigner",
+   "language": "it",
+   "display_name": "Fashion designer",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "ItalianFootballFan",
+   "language": "it",
+   "display_name": "Football fan",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "ItalianGondolier",
+   "language": "it",
+   "display_name": "Gondolier",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "Italian",
+   "language": "it",
+   "display_name": "Italian (main voice)",
+   "reference_seconds": 9.5
+  },
+  {
+   "id": "ItalianNonnaKitchen",
+   "language": "it",
+   "display_name": "Nonna kitchen",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "ItalianOperaTenor",
+   "language": "it",
+   "display_name": "Opera tenor",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "PortugueseBeach",
+   "language": "pt",
+   "display_name": "Beach",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "PortugueseBusiness",
+   "language": "pt",
+   "display_name": "Business",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "PortugueseFado",
+   "language": "pt",
+   "display_name": "Fado",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "PortugueseGrandpaFarm",
+   "language": "pt",
+   "display_name": "Grandpa farm",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "PortugueseNewsAnchor",
+   "language": "pt",
+   "display_name": "News anchor",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "Portuguese",
+   "language": "pt",
+   "display_name": "Portuguese (main voice)",
+   "reference_seconds": 9.5
+  },
+  {
+   "id": "RussianBabushka",
+   "language": "ru",
+   "display_name": "Babushka",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "RussianFairyTale",
+   "language": "ru",
+   "display_name": "Fairy tale",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "RussianHockeyCheer",
+   "language": "ru",
+   "display_name": "Hockey cheer",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "RussianLiteratureTeacher",
+   "language": "ru",
+   "display_name": "Literature teacher",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "Russian",
+   "language": "ru",
+   "display_name": "Russian (main voice)",
+   "reference_seconds": 9.5
+  },
+  {
+   "id": "RussianSpaceControl",
+   "language": "ru",
+   "display_name": "Space control",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "RussianTaxiDriver",
+   "language": "ru",
+   "display_name": "Taxi driver",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "Chinese",
+   "language": "zh",
+   "display_name": "Chinese (main voice)",
+   "reference_seconds": 10.0
+  },
+  {
+   "id": "ChineseLivestreamSeller",
+   "language": "zh",
+   "display_name": "Livestream seller",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "ChineseNewsCctv",
+   "language": "zh",
+   "display_name": "News CCTV",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "ChineseXianxiaMaster",
+   "language": "zh",
+   "display_name": "Xianxia master",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "JapaneseAnimeHeroine",
+   "language": "ja",
+   "display_name": "Anime heroine",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "JapaneseGrandma",
+   "language": "ja",
+   "display_name": "Grandma",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "JapaneseSalarymanApology",
+   "language": "ja",
+   "display_name": "Salaryman apology",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "JapaneseTrainConductor",
+   "language": "ja",
+   "display_name": "Train conductor",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "KoreanGrandpaAdvice",
+   "language": "ko",
+   "display_name": "Grandpa advice",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "KoreanKdramaConfession",
+   "language": "ko",
+   "display_name": "K-drama confession",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "KoreanNewsAnchor",
+   "language": "ko",
+   "display_name": "News anchor",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "Arabic",
+   "language": "ar",
+   "display_name": "Arabic (main voice)",
+   "reference_seconds": 9.5
+  },
+  {
+   "id": "ArabicFalconer",
+   "language": "ar",
+   "display_name": "Falconer",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "ArabicMother",
+   "language": "ar",
+   "display_name": "Mother",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "ArabicNews",
+   "language": "ar",
+   "display_name": "News",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "HindiBollywoodDrama",
+   "language": "hi",
+   "display_name": "Bollywood drama",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "HindiCollegeFriends",
+   "language": "hi",
+   "display_name": "College friends",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "HindiDadiKahani",
+   "language": "hi",
+   "display_name": "Dadi kahani",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "Hindi",
+   "language": "hi",
+   "display_name": "Hindi (main voice)",
+   "reference_seconds": 10.0
+  },
+  {
+   "id": "HindiYogaTeacher",
+   "language": "hi",
+   "display_name": "Yoga teacher",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "TurkishFisherman",
+   "language": "tr",
+   "display_name": "Fisherman",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "TurkishGrandmaCooking",
+   "language": "tr",
+   "display_name": "Grandma cooking",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "TurkishNewsAnchor",
+   "language": "tr",
+   "display_name": "News anchor",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "DutchBaker",
+   "language": "nl",
+   "display_name": "Baker",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "DutchGrandpaStory",
+   "language": "nl",
+   "display_name": "Grandpa story",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "DutchWeatherPresenter",
+   "language": "nl",
+   "display_name": "Weather presenter",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "PolishBabciaPierogi",
+   "language": "pl",
+   "display_name": "Babcia pierogi",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "PolishMountainGuide",
+   "language": "pl",
+   "display_name": "Mountain guide",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "PolishNewsAnchor",
+   "language": "pl",
+   "display_name": "News anchor",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "PolishPoetryStudent",
+   "language": "pl",
+   "display_name": "Poetry student",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "IndonesianNewsAnchor",
+   "language": "id",
+   "display_name": "News anchor",
+   "reference_seconds": 10.1
+  },
+  {
+   "id": "IndonesianTourGuide",
+   "language": "id",
+   "display_name": "Tour guide",
+   "reference_seconds": 10.1
+  }
+ ]
+}

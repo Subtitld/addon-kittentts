@@ -1,0 +1,356 @@
+name: Release
+
+# Copyright 2026 Subtitld contributors
+# SPDX-License-Identifier: Apache-2.0
+#
+# test -> build (one per platform, needs: test) -> release (tags only).
+#
+# A handshake proves little here: kitten-tts, kitten-ref and LibTorch only run
+# at the first line, so a bundle missing one starts, says hello, and fails on
+# the user's first click. Every platform's FROZEN add-on is therefore unpacked
+# from its release zip the way Subtitld installs it, downloads the model
+# (1.66 GB) and the reference encoder (542 MB), and speaks through the
+# protocol, a cloned voice included, with nothing but what is inside its own
+# bundle, before anything is published.
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      targets:
+        description: 'Platforms to build, comma-separated (linux-x86_64, macos-arm64, windows-x86_64); empty for all. Tag pushes always build all.'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    name: Tests
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e '.[dev]'
+
+      # The real synthesis runs on each platform's frozen archive (build job).
+      - name: Test suite
+        run: pytest -q -rs --ignore tests/test_installed.py --junitxml=report.xml
+
+      - name: Refuse skipped tests
+        run: |
+          python - <<'PY'
+          import sys, xml.etree.ElementTree as ET
+          root = ET.parse('report.xml').getroot()
+          suites = [root] if root.tag == 'testsuite' else list(root)
+          skipped = sum(int(s.get('skipped', 0)) for s in suites)
+          tests = sum(int(s.get('tests', 0)) for s in suites)
+          print(f'{tests} tests, {skipped} skipped')
+          if skipped:
+              sys.exit('FATAL: tests were skipped; the release would ship partly untested')
+          PY
+
+  # The platforms to build. A manual run can build only some, to try a
+  # platform that cannot be built locally without paying for the others.
+  plan:
+    name: Plan
+    runs-on: ubuntu-22.04
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - id: plan
+        env:
+          TARGETS: ${{ github.event_name == 'workflow_dispatch' && inputs.targets || '' }}
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os
+          platforms = [
+              {'os': 'ubuntu-22.04', 'platform_label': 'linux-x86_64', 'exe_suffix': ''},
+              # The catalog cannot tell Mac architectures apart: ship arm64, as
+              # the other add-ons do.
+              {'os': 'macos-14', 'platform_label': 'macos-arm64', 'exe_suffix': ''},
+              {'os': 'windows-2022', 'platform_label': 'windows-x86_64', 'exe_suffix': '.exe'},
+          ]
+          wanted = {t.strip() for t in os.environ['TARGETS'].split(',') if t.strip()}
+          unknown = wanted - {p['platform_label'] for p in platforms}
+          if unknown:
+              raise SystemExit(f'unknown targets: {sorted(unknown)}')
+          chosen = [p for p in platforms if not wanted or p['platform_label'] in wanted]
+          print('matrix=' + json.dumps({'include': chosen}))
+          PY
+
+  build:
+    name: Build ${{ matrix.platform_label }}
+    needs: [test, plan]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install build deps
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          # LibTorch for kitten-tts and kitten-ref: the CPU wheel, at the
+          # version tools/build_native.py pins.
+          pip install --index-url https://download.pytorch.org/whl/cpu torch==2.14.1
+          pip install -e '.[build,dev]'
+          python -c "from importlib.metadata import version as v; import platform, ssl; print('python', platform.python_version(), '| pyinstaller', v('pyinstaller'), '| torch', v('torch'), '|', ssl.OPENSSL_VERSION)"
+
+      # MSVC on the PATH for CMake's Ninja-less default (Visual Studio) generator.
+      - name: MSVC environment
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Build kitten-tts and kitten-ref
+        shell: bash
+        run: python tools/build_native.py
+
+      - name: Build bundle
+        shell: bash
+        run: pyinstaller pyinstaller.spec --noconfirm
+
+      # Fails the build when a native file in the bundle has no notice.
+      - name: Assemble third-party licences
+        shell: bash
+        run: python tools/assemble_licences.py --bundle dist/kittentts-addon --out release-staging/THIRD_PARTY_LICENSES
+
+      - name: Stage archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          version=$(python -c "import json; print(json.load(open('manifest.json'))['version'])")
+          mkdir -p release-staging/bin
+          cp -R dist/kittentts-addon/. release-staging/bin/
+          cp LICENSE README.md release-staging/
+          # The host resolves `executable` verbatim (manifest dir / path) and
+          # never appends `.exe`, so the Windows archive names the real file.
+          python - "${{ matrix.exe_suffix }}" <<'PY'
+          import json, sys
+          suffix = sys.argv[1]
+          manifest = json.load(open('manifest.json', encoding='utf-8'))
+          manifest['executable'] += suffix
+          with open('release-staging/manifest.json', 'w', encoding='utf-8') as f:
+              json.dump(manifest, f, indent=2, ensure_ascii=False)
+              f.write('\n')
+          print('executable:', manifest['executable'])
+          PY
+          test -f "release-staging/bin/kittentts-addon${{ matrix.exe_suffix }}"
+          archive="kittentts-${version}-${{ matrix.platform_label }}.zip"
+          python tools/make_archive.py release-staging "$archive"
+          echo "ARCHIVE_NAME=$archive" >> "$GITHUB_ENV"
+
+      - name: Report sizes
+        shell: bash
+        run: |
+          python - <<'PY'
+          import os
+          def tree_size(path):
+              total = 0
+              for d, _, files in os.walk(path):
+                  for f in files:
+                      p = os.path.join(d, f)
+                      if not os.path.islink(p):
+                          total += os.path.getsize(p)
+              return total
+          onedir = tree_size('dist/kittentts-addon')
+          archive = os.path.getsize(os.environ['ARCHIVE_NAME'])
+          line = (f"{os.environ['ARCHIVE_NAME']}: onedir {onedir:,} bytes "
+                  f"({onedir / 2**20:.1f} MiB), archive {archive:,} bytes ({archive / 2**20:.1f} MiB)")
+          print(line)
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as f:
+              f.write(line + '\n')
+          PY
+
+      - name: Show program linkage
+        shell: bash
+        run: |
+          for name in kitten-tts kitten-ref; do
+            binary="release-staging/bin/_internal/assets/${name}${{ matrix.exe_suffix }}"
+            case "$RUNNER_OS" in
+              Linux) ldd "$binary" || true ;;
+              macOS) otool -L "$binary" || true; codesign -dv "$binary" 2>&1 || true ;;
+              Windows) ls -la release-staging/bin/_internal/assets/ ;;
+            esac
+          done
+
+      # Exactly what Subtitld's installer does: ZipFile.extractall (no
+      # symlinks, no permission bits), then chmod +x on the executable only.
+      - name: Install the archive like the host
+        shell: bash
+        run: |
+          python - "${{ runner.temp }}/installed" <<'PY'
+          import json, os, sys, zipfile
+          dest = sys.argv[1]
+          with zipfile.ZipFile(os.environ['ARCHIVE_NAME']) as zf:
+              zf.extractall(dest)
+              exe = os.path.join(dest, json.loads(zf.read('manifest.json'))['executable'])
+          os.chmod(exe, os.stat(exe).st_mode | 0o111)
+          print('installed', exe)
+          PY
+
+      - name: Prove the installed add-on speaks
+        shell: bash
+        env:
+          # Absolute: Popen resolves a relative executable against the current
+          # directory, not the cwd= it is handed.
+          KITTENTTS_TEST_BINARY: ${{ runner.temp }}/installed/bin/kittentts-addon${{ matrix.exe_suffix }}
+          SUBTITLD_MODELS_DIR: ${{ runner.temp }}/models
+        run: |
+          set -euo pipefail
+          pytest -v -rs tests/test_installed.py --junitxml=frozen-report.xml
+          python - <<'PY'
+          import sys, xml.etree.ElementTree as ET
+          root = ET.parse('frozen-report.xml').getroot()
+          suites = [root] if root.tag == 'testsuite' else list(root)
+          skipped = sum(int(s.get('skipped', 0)) for s in suites)
+          if skipped:
+              sys.exit(f'FATAL: {skipped} installed-binary test(s) skipped')
+          PY
+
+      - name: Assert the archive is complete
+        shell: bash
+        env:
+          EXE_SUFFIX: ${{ matrix.exe_suffix }}
+          PLATFORM_LABEL: ${{ matrix.platform_label }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib, json, os, runpy, sys, zipfile
+          name = os.environ['ARCHIVE_NAME']
+          suffix = os.environ['EXE_SUFFIX']
+          label = os.environ['PLATFORM_LABEL']
+          zf = zipfile.ZipFile(name)
+          names = set(zf.namelist())
+          manifest = json.loads(zf.read('manifest.json'))
+          repo_manifest = json.load(open('manifest.json', encoding='utf-8'))
+          problems = []
+          if manifest['version'] != repo_manifest['version']:
+              problems.append('manifest version mismatch')
+          if manifest['executable'] != f'bin/kittentts-addon{suffix}':
+              problems.append(f"executable is {manifest['executable']!r}")
+          programs = [f'bin/_internal/assets/kitten-tts{suffix}', f'bin/_internal/assets/kitten-ref{suffix}']
+          required = ['manifest.json', 'LICENSE', 'README.md', manifest['executable'], *programs,
+                      'bin/_internal/assets/text-data/en/tagger.fst',
+                      'bin/_internal/kittentts_addon/pins.json',
+                      'bin/_internal/kittentts_addon/voice_list.json',
+                      'THIRD_PARTY_LICENSES/README.md',
+                      'THIRD_PARTY_LICENSES/kitten-tts-2-cpp/LICENSE',
+                      'THIRD_PARTY_LICENSES/kitten-tts-2-cpp/SOURCE.txt',
+                      'THIRD_PARTY_LICENSES/pytorch/LICENSE',
+                      'THIRD_PARTY_LICENSES/models/README.md',
+                      'THIRD_PARTY_LICENSES/models/STELLON-LABS-COMMUNITY-LICENSE.md',
+                      'THIRD_PARTY_LICENSES/ref-encoder/README.md',
+                      'THIRD_PARTY_LICENSES/python/LICENSE.txt',
+                      'THIRD_PARTY_LICENSES/pyinstaller/COPYING.txt']
+          problems += [f'missing {r}' for r in required if r not in names]
+          # Copied in after PyInstaller's COLLECT, so they must be the built
+          # files byte for byte.
+          for program in programs:
+              if program in names:
+                  with open('build/assets/' + program.rsplit('/', 1)[1], 'rb') as f:
+                      if zf.read(program) != f.read():
+                          problems.append(f'{program} differs from the built program')
+          # No KittenML weights in the archive: they are the user's download.
+          heavy = [n for n in names if n.endswith(('.gguf', '.safetensors', 'decoder.pt', 'voices.json'))]
+          if heavy:
+              problems.append(f'model files in the archive: {heavy}')
+          if problems:
+              sys.exit('FATAL: ' + '; '.join(problems))
+          print(f'{name}: {len(names)} entries, all required files present')
+          PY
+
+      - name: Checksum
+        shell: bash
+        run: |
+          python -c "import hashlib,os;p=os.environ['ARCHIVE_NAME'];print(hashlib.sha256(open(p,'rb').read()).hexdigest())" > "${ARCHIVE_NAME}.sha256"
+          cat "${ARCHIVE_NAME}.sha256"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.platform_label }}
+          path: |
+            ${{ env.ARCHIVE_NAME }}
+            ${{ env.ARCHIVE_NAME }}.sha256
+          if-no-files-found: error
+
+  release:
+    name: Publish GitHub Release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: artefacts
+      - name: Flatten
+        shell: bash
+        run: |
+          set -euo pipefail
+          version=$(python3 -c "import json; print(json.load(open('manifest.json'))['version'])")
+          if [ "${GITHUB_REF_NAME#v}" != "$version" ]; then
+            echo "FATAL: tag ${GITHUB_REF_NAME} does not match manifest version ${version}"
+            exit 1
+          fi
+          mkdir -p release-files
+          find artefacts -type f -name 'kittentts-*' -print -exec cp {} release-files/ \;
+          ls -lah release-files
+          # Every advertised platform must be present, each with its sidecar,
+          # or the catalog refuses the release.
+          for label in linux-x86_64 macos-arm64 windows-x86_64; do
+            test -f "release-files/kittentts-${version}-${label}.zip"
+            test -f "release-files/kittentts-${version}-${label}.zip.sha256"
+          done
+      # The notes are the tag's message when the tag is annotated, otherwise
+      # the tagged commit's message, without its subject line and trailers.
+      - name: Release notes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --force origin "refs/tags/${GITHUB_REF_NAME}:refs/tags/${GITHUB_REF_NAME}"
+          if [ "$(git cat-file -t "refs/tags/${GITHUB_REF_NAME}")" = tag ]; then
+            git tag -l --format='%(contents:body)' "${GITHUB_REF_NAME}" > release-notes.md
+          else
+            git log -1 --format=%b "${GITHUB_SHA}" | sed -E '/^(Co-authored-by|Signed-off-by): /Id' > release-notes.md
+          fi
+          if ! grep -q '[^[:space:]]' release-notes.md; then
+            echo "FATAL: the tag and its commit carry no release notes"
+            exit 1
+          fi
+          cat release-notes.md
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: release-files/*
+          fail_on_unmatched_files: true
+          generate_release_notes: true
+          body_path: release-notes.md
+
+      # The catalog also rebuilds every six hours; this only makes it immediate.
+      - name: Trigger catalog rebuild
+        env:
+          GH_TOKEN: ${{ secrets.SUBTITLD_BOT_TOKEN }}
+        run: |
+          if [ -z "${GH_TOKEN}" ]; then
+            echo "::notice::SUBTITLD_BOT_TOKEN is not set; the catalog picks this release up on its next scheduled rebuild."
+            exit 0
+          fi
+          gh api repos/Subtitld/addons-catalog/dispatches -f event_type=catalog-rebuild

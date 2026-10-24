@@ -1,0 +1,815 @@
+{
+  "manifest_version": 1,
+  "id": "kittentts",
+  "version": "26.10.1",
+  "display_name": "KittenTTS 2 (offline, voice clone, 16 languages)",
+  "summary": "KittenML's KittenTTS 2: speaks 16 languages at 24 kHz in the speaker's own voice, cloned from the video, or in 115 built-in voices, on the CPU at about real time. The model, about 1.6 GB, downloads on first use; cloning adds 540 MB. The weights are under the Stellon Labs Community License: commercial use is free only below US$1M a year in revenue or funding, and needs registering with Stellon Labs.",
+  "author": "Subtitld",
+  "homepage": "https://github.com/Subtitld/addon-kittentts",
+  "license": "Apache-2.0 (add-on); MIT and Apache-2.0 (runtime, reference encoder); Stellon Labs Community License (KittenTTS 2 weights, downloaded on first use)",
+  "executable": "bin/kittentts-addon",
+  "protocol": 1,
+  "startup_timeout_sec": 30,
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tasks": [
+    "tts.synthesize"
+  ],
+  "compute": "cpu",
+  "voice_clone": true,
+  "languages": [
+    "en",
+    "es",
+    "fr",
+    "de",
+    "it",
+    "pt",
+    "ru",
+    "zh",
+    "ja",
+    "ko",
+    "ar",
+    "hi",
+    "tr",
+    "nl",
+    "pl",
+    "id"
+  ],
+  "voices": [
+    {
+      "id": "kittentts-clone",
+      "language": "*",
+      "display_name": "Speaker's own voice (cloned from the video)",
+      "requires": [
+        "voice_ref_audio"
+      ],
+      "sample_rate": 24000
+    },
+    {
+      "id": "AirportAnnouncer",
+      "language": "en",
+      "display_name": "Airport announcer",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Alfred",
+      "language": "en",
+      "display_name": "Alfred (tender, older, man)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "AudiobookNarratorFemale",
+      "language": "en",
+      "display_name": "Audiobook narrator, woman",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Bella",
+      "language": "en",
+      "display_name": "Bella (KittenTTS 0.8 voice, woman)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "BoredTeenager",
+      "language": "en",
+      "display_name": "Bored teenager",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Bruno",
+      "language": "en",
+      "display_name": "Bruno (KittenTTS 0.8 voice, man)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "CalmHostageNegotiator",
+      "language": "en",
+      "display_name": "Calm hostage negotiator",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Claire",
+      "language": "en",
+      "display_name": "Claire (playful professional, woman)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Dante",
+      "language": "en",
+      "display_name": "Dante (playful, smooth, young, man)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Diana",
+      "language": "en",
+      "display_name": "Diana (stern military officer, woman)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Dolores",
+      "language": "en",
+      "display_name": "Dolores (southern, elderly, woman)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Edith",
+      "language": "en",
+      "display_name": "Edith (soft elderly grandmother, woman)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Eleanor",
+      "language": "en",
+      "display_name": "Eleanor (somber historian, woman)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Elliot",
+      "language": "en",
+      "display_name": "Elliot (grieving, young, man)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "FairytaleNarratorWhimsical",
+      "language": "en",
+      "display_name": "Fairytale narrator whimsical",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Frank",
+      "language": "en",
+      "display_name": "Frank (gravelly, grizzled war veteran, man)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Grace",
+      "language": "en",
+      "display_name": "Grace (soothing nurse, woman)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "GrandmaBedtimeStory",
+      "language": "en",
+      "display_name": "Grandma bedtime story",
+      "sample_rate": 24000
+    },
+    {
+      "id": "GriefEulogy",
+      "language": "en",
+      "display_name": "Grief eulogy",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Herbert",
+      "language": "en",
+      "display_name": "Herbert (wise elderly professor, man)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Hugo",
+      "language": "en",
+      "display_name": "Hugo (KittenTTS 0.8 voice, man)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Iris",
+      "language": "en",
+      "display_name": "Iris (hushed museum guide, woman)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Jasper",
+      "language": "en",
+      "display_name": "Jasper (KittenTTS 0.8 voice, man)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Julian",
+      "language": "en",
+      "display_name": "Julian (soft, dreamy poet, man)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Kiki",
+      "language": "en",
+      "display_name": "Kiki (KittenTTS 0.8 voice, woman)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Laurence",
+      "language": "en",
+      "display_name": "Laurence (dramatic stage actor, man)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Leo",
+      "language": "en",
+      "display_name": "Leo (KittenTTS 0.8 voice, man)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Luna",
+      "language": "en",
+      "display_name": "Luna (KittenTTS 0.8 voice, woman)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Maeve",
+      "language": "en",
+      "display_name": "Maeve (cozy, warm storyteller, woman)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Marcus",
+      "language": "en",
+      "display_name": "Marcus (smooth radio DJ, man)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Martha",
+      "language": "en",
+      "display_name": "Martha (weathered radio journalist, woman)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Matthew",
+      "language": "en",
+      "display_name": "Matthew (exhausted mechanic, man)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Miles",
+      "language": "en",
+      "display_name": "Miles (gentle librarian, man)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "NervousFirstDate",
+      "language": "en",
+      "display_name": "Nervous first date",
+      "sample_rate": 24000
+    },
+    {
+      "id": "NewsAnchorFemale",
+      "language": "en",
+      "display_name": "News anchor, woman",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Otis",
+      "language": "en",
+      "display_name": "Otis (rumbling blues musician, man)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "PilotCabinAnnouncement",
+      "language": "en",
+      "display_name": "Pilot cabin announcement",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Raven",
+      "language": "en",
+      "display_name": "Raven (controlled fury, young, woman)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Reginald",
+      "language": "en",
+      "display_name": "Reginald (distinguished elderly diplomat, man)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Rosie",
+      "language": "en",
+      "display_name": "Rosie (KittenTTS 0.8 voice, woman)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Sable",
+      "language": "en",
+      "display_name": "Sable (hushed conspirator, woman)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Saoirse",
+      "language": "en",
+      "display_name": "Saoirse (joyful, Irish, woman)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "SarcasticCoworker",
+      "language": "en",
+      "display_name": "Sarcastic coworker",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Serena",
+      "language": "en",
+      "display_name": "Serena (gentle yoga instructor, woman)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Victor",
+      "language": "en",
+      "display_name": "Victor (controlled fury, older, man)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Victoria",
+      "language": "en",
+      "display_name": "Victoria (regal narrator, woman)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Vincent",
+      "language": "en",
+      "display_name": "Vincent (hushed museum guide, man)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Walter",
+      "language": "en",
+      "display_name": "Walter (warm grandfather, man)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "WeatherPresenterCheerful",
+      "language": "en",
+      "display_name": "Weather presenter cheerful",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Willow",
+      "language": "en",
+      "display_name": "Willow (hushed, young, woman)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "SpanishAbuela",
+      "language": "es",
+      "display_name": "Abuela",
+      "sample_rate": 24000
+    },
+    {
+      "id": "SpanishBreakupSad",
+      "language": "es",
+      "display_name": "Breakup sad",
+      "sample_rate": 24000
+    },
+    {
+      "id": "SpanishNews",
+      "language": "es",
+      "display_name": "News",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Spanish",
+      "language": "es",
+      "display_name": "Spanish (main voice)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "SpanishTango",
+      "language": "es",
+      "display_name": "Tango",
+      "sample_rate": 24000
+    },
+    {
+      "id": "FrenchDocumentary",
+      "language": "fr",
+      "display_name": "Documentary",
+      "sample_rate": 24000
+    },
+    {
+      "id": "French",
+      "language": "fr",
+      "display_name": "French (main voice)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "FrenchGrandmereRecette",
+      "language": "fr",
+      "display_name": "Grandmere recette",
+      "sample_rate": 24000
+    },
+    {
+      "id": "FrenchTeacher",
+      "language": "fr",
+      "display_name": "Teacher",
+      "sample_rate": 24000
+    },
+    {
+      "id": "FrenchWaiter",
+      "language": "fr",
+      "display_name": "Waiter",
+      "sample_rate": 24000
+    },
+    {
+      "id": "German",
+      "language": "de",
+      "display_name": "German (main voice)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "GermanKneipe",
+      "language": "de",
+      "display_name": "Kneipe",
+      "sample_rate": 24000
+    },
+    {
+      "id": "GermanProfessor",
+      "language": "de",
+      "display_name": "Professor",
+      "sample_rate": 24000
+    },
+    {
+      "id": "GermanTrainAnnouncement",
+      "language": "de",
+      "display_name": "Train announcement",
+      "sample_rate": 24000
+    },
+    {
+      "id": "ItalianFashionDesigner",
+      "language": "it",
+      "display_name": "Fashion designer",
+      "sample_rate": 24000
+    },
+    {
+      "id": "ItalianFootballFan",
+      "language": "it",
+      "display_name": "Football fan",
+      "sample_rate": 24000
+    },
+    {
+      "id": "ItalianGondolier",
+      "language": "it",
+      "display_name": "Gondolier",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Italian",
+      "language": "it",
+      "display_name": "Italian (main voice)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "ItalianNonnaKitchen",
+      "language": "it",
+      "display_name": "Nonna kitchen",
+      "sample_rate": 24000
+    },
+    {
+      "id": "ItalianOperaTenor",
+      "language": "it",
+      "display_name": "Opera tenor",
+      "sample_rate": 24000
+    },
+    {
+      "id": "PortugueseBeach",
+      "language": "pt",
+      "display_name": "Beach",
+      "sample_rate": 24000
+    },
+    {
+      "id": "PortugueseBusiness",
+      "language": "pt",
+      "display_name": "Business",
+      "sample_rate": 24000
+    },
+    {
+      "id": "PortugueseFado",
+      "language": "pt",
+      "display_name": "Fado",
+      "sample_rate": 24000
+    },
+    {
+      "id": "PortugueseGrandpaFarm",
+      "language": "pt",
+      "display_name": "Grandpa farm",
+      "sample_rate": 24000
+    },
+    {
+      "id": "PortugueseNewsAnchor",
+      "language": "pt",
+      "display_name": "News anchor",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Portuguese",
+      "language": "pt",
+      "display_name": "Portuguese (main voice)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "RussianBabushka",
+      "language": "ru",
+      "display_name": "Babushka",
+      "sample_rate": 24000
+    },
+    {
+      "id": "RussianFairyTale",
+      "language": "ru",
+      "display_name": "Fairy tale",
+      "sample_rate": 24000
+    },
+    {
+      "id": "RussianHockeyCheer",
+      "language": "ru",
+      "display_name": "Hockey cheer",
+      "sample_rate": 24000
+    },
+    {
+      "id": "RussianLiteratureTeacher",
+      "language": "ru",
+      "display_name": "Literature teacher",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Russian",
+      "language": "ru",
+      "display_name": "Russian (main voice)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "RussianSpaceControl",
+      "language": "ru",
+      "display_name": "Space control",
+      "sample_rate": 24000
+    },
+    {
+      "id": "RussianTaxiDriver",
+      "language": "ru",
+      "display_name": "Taxi driver",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Chinese",
+      "language": "zh",
+      "display_name": "Chinese (main voice)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "ChineseLivestreamSeller",
+      "language": "zh",
+      "display_name": "Livestream seller",
+      "sample_rate": 24000
+    },
+    {
+      "id": "ChineseNewsCctv",
+      "language": "zh",
+      "display_name": "News CCTV",
+      "sample_rate": 24000
+    },
+    {
+      "id": "ChineseXianxiaMaster",
+      "language": "zh",
+      "display_name": "Xianxia master",
+      "sample_rate": 24000
+    },
+    {
+      "id": "JapaneseAnimeHeroine",
+      "language": "ja",
+      "display_name": "Anime heroine",
+      "sample_rate": 24000
+    },
+    {
+      "id": "JapaneseGrandma",
+      "language": "ja",
+      "display_name": "Grandma",
+      "sample_rate": 24000
+    },
+    {
+      "id": "JapaneseSalarymanApology",
+      "language": "ja",
+      "display_name": "Salaryman apology",
+      "sample_rate": 24000
+    },
+    {
+      "id": "JapaneseTrainConductor",
+      "language": "ja",
+      "display_name": "Train conductor",
+      "sample_rate": 24000
+    },
+    {
+      "id": "KoreanGrandpaAdvice",
+      "language": "ko",
+      "display_name": "Grandpa advice",
+      "sample_rate": 24000
+    },
+    {
+      "id": "KoreanKdramaConfession",
+      "language": "ko",
+      "display_name": "K-drama confession",
+      "sample_rate": 24000
+    },
+    {
+      "id": "KoreanNewsAnchor",
+      "language": "ko",
+      "display_name": "News anchor",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Arabic",
+      "language": "ar",
+      "display_name": "Arabic (main voice)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "ArabicFalconer",
+      "language": "ar",
+      "display_name": "Falconer",
+      "sample_rate": 24000
+    },
+    {
+      "id": "ArabicMother",
+      "language": "ar",
+      "display_name": "Mother",
+      "sample_rate": 24000
+    },
+    {
+      "id": "ArabicNews",
+      "language": "ar",
+      "display_name": "News",
+      "sample_rate": 24000
+    },
+    {
+      "id": "HindiBollywoodDrama",
+      "language": "hi",
+      "display_name": "Bollywood drama",
+      "sample_rate": 24000
+    },
+    {
+      "id": "HindiCollegeFriends",
+      "language": "hi",
+      "display_name": "College friends",
+      "sample_rate": 24000
+    },
+    {
+      "id": "HindiDadiKahani",
+      "language": "hi",
+      "display_name": "Dadi kahani",
+      "sample_rate": 24000
+    },
+    {
+      "id": "Hindi",
+      "language": "hi",
+      "display_name": "Hindi (main voice)",
+      "sample_rate": 24000
+    },
+    {
+      "id": "HindiYogaTeacher",
+      "language": "hi",
+      "display_name": "Yoga teacher",
+      "sample_rate": 24000
+    },
+    {
+      "id": "TurkishFisherman",
+      "language": "tr",
+      "display_name": "Fisherman",
+      "sample_rate": 24000
+    },
+    {
+      "id": "TurkishGrandmaCooking",
+      "language": "tr",
+      "display_name": "Grandma cooking",
+      "sample_rate": 24000
+    },
+    {
+      "id": "TurkishNewsAnchor",
+      "language": "tr",
+      "display_name": "News anchor",
+      "sample_rate": 24000
+    },
+    {
+      "id": "DutchBaker",
+      "language": "nl",
+      "display_name": "Baker",
+      "sample_rate": 24000
+    },
+    {
+      "id": "DutchGrandpaStory",
+      "language": "nl",
+      "display_name": "Grandpa story",
+      "sample_rate": 24000
+    },
+    {
+      "id": "DutchWeatherPresenter",
+      "language": "nl",
+      "display_name": "Weather presenter",
+      "sample_rate": 24000
+    },
+    {
+      "id": "PolishBabciaPierogi",
+      "language": "pl",
+      "display_name": "Babcia pierogi",
+      "sample_rate": 24000
+    },
+    {
+      "id": "PolishMountainGuide",
+      "language": "pl",
+      "display_name": "Mountain guide",
+      "sample_rate": 24000
+    },
+    {
+      "id": "PolishNewsAnchor",
+      "language": "pl",
+      "display_name": "News anchor",
+      "sample_rate": 24000
+    },
+    {
+      "id": "PolishPoetryStudent",
+      "language": "pl",
+      "display_name": "Poetry student",
+      "sample_rate": 24000
+    },
+    {
+      "id": "IndonesianNewsAnchor",
+      "language": "id",
+      "display_name": "News anchor",
+      "sample_rate": 24000
+    },
+    {
+      "id": "IndonesianTourGuide",
+      "language": "id",
+      "display_name": "Tour guide",
+      "sample_rate": 24000
+    }
+  ],
+  "models": [
+    {
+      "id": "kitten-tts-2",
+      "display_name": "KittenTTS 2 (1.7B, ternary)",
+      "repo": "KittenML/kitten-tts-2",
+      "revision": "c93cb7c271baa51d9ae8204d5277988906f235a2",
+      "size_mb": 1588,
+      "license": "Stellon Labs Community License",
+      "bundled": false,
+      "default": true
+    },
+    {
+      "id": "ref-encoder",
+      "display_name": "Reference encoder, for cloning",
+      "repo": "Subtitld/addon-kittentts",
+      "size_mb": 517,
+      "license": "MIT",
+      "bundled": false,
+      "default": false
+    }
+  ],
+  "disk_required_mb": 2900,
+  "ram_required_mb": 3072,
+  "config_schema": {
+    "fields": [
+      {
+        "key": "preset",
+        "type": "select",
+        "label": "Delivery",
+        "default": "stable",
+        "options": [
+          {
+            "value": "stable",
+            "label": "Stable: KittenTTS's default"
+          },
+          {
+            "value": "expressive",
+            "label": "Expressive: livelier, less predictable"
+          }
+        ],
+        "help": "How freely the model samples its speech. Expressive suits drama, but a line may come out odd more often; listen before dubbing a whole film with it."
+      },
+      {
+        "key": "threads",
+        "type": "int",
+        "label": "CPU threads",
+        "default": 0,
+        "min": 0,
+        "max": 256,
+        "step": 1,
+        "help": "0 picks the performance cores on a CPU that also has efficiency cores, else one thread per core, at most 8. Fewer leaves the computer more responsive while dubbing."
+      },
+      {
+        "key": "voice_ref_audio",
+        "type": "file",
+        "label": "Fallback reference clip",
+        "help": "Used by the speaker's own voice when Subtitld has no clip of the speaker to send: 3 to 30 seconds of one person speaking, WAV preferred."
+      },
+      {
+        "key": "voice_ref_text",
+        "type": "string",
+        "label": "Fallback reference transcript",
+        "help": "The exact words spoken in the fallback clip. With them the clone is closer to the speaker and makes fewer mistakes."
+      },
+      {
+        "key": "skip_ref_text",
+        "type": "bool",
+        "default": false,
+        "label": "Clone the timbre only",
+        "help": "Subtitld normally sends, with the speaker's clip, the subtitle text spoken in it, and KittenTTS then continues from the clip, which is closer to the speaker and steadier. With this on, only the timbre is cloned. Try it if a dub into another language keeps the speaker's accent, or when the subtitles paraphrase the speech."
+      }
+    ]
+  }
+}
