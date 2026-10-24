@@ -88,6 +88,9 @@ def torch_dirs() -> tuple[Path, Path, str]:
 
 
 def cpu_flags() -> list[str]:
+    override = os.environ.get('KITTENTTS_GGML_FLAGS')  # for trying other baselines
+    if override is not None:
+        return override.split()
     machine = platform.machine().lower()
     if machine in ('x86_64', 'amd64'):
         return ['-DGGML_AVX=ON', '-DGGML_AVX2=ON', '-DGGML_FMA=ON', '-DGGML_F16C=ON',
@@ -129,9 +132,7 @@ def build(source: Path, prefix: Path, jobs: int) -> tuple[Path, Path]:
          '-DLLAMA_BUILD_KITTEN_TTS=ON', '-DLLAMA_BUILD_SERVER=OFF', '-DLLAMA_BUILD_TESTS=OFF',
          '-DLLAMA_BUILD_EXAMPLES=OFF', '-DLLAMA_CURL=OFF', f'-DPython3_EXECUTABLE={sys.executable}',
          *cpu_flags(),
-         # MSVC makes u8"" literals char8_t in C++20, which llama.cpp's sources
-         # do not expect (they build as C++17 upstream).
-         *(['-DCMAKE_CXX_FLAGS=/Zc:char8_t- /EHsc /utf-8'] if sys.platform == 'win32' else [])])
+         *(['-DCMAKE_CXX_FLAGS=/EHsc /utf-8'] if sys.platform == 'win32' else [])])
     run(['cmake', '--build', fork_build, '--config', 'Release', '--target', 'kitten-tts', '-j', str(jobs)])
 
     ref_build = BUILD / 'kitten-ref-build'

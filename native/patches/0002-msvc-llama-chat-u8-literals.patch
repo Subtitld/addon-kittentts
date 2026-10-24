@@ -1,0 +1,17 @@
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 24f05cc..9a0eff3 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -54,6 +54,12 @@ target_include_directories(llama PRIVATE .)
+ target_include_directories(llama PUBLIC ../include)
+ target_compile_features   (llama PRIVATE cxx_std_17) # don't bump
+ 
++# Subtitld: kitten-tts builds the tree as C++20 (LibTorch needs it), where
++# MSVC types u8"" literals as char8_t; llama-chat.cpp passes them as char.
++if (MSVC)
++    set_source_files_properties(llama-chat.cpp PROPERTIES COMPILE_OPTIONS "/Zc:char8_t-")
++endif()
++
+ target_link_libraries(llama PUBLIC ggml)
+ 
+ if (BUILD_SHARED_LIBS)
